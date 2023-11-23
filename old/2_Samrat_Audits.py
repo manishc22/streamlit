@@ -33,13 +33,13 @@ df_alerts1 = pd.DataFrame.from_records(get_store_data().data)
 total_images = df_alerts1.shape[0]
 col1, col2 = st.columns([1, 3], gap='large')
 with col1:
-    slider = st.slider("###### Total Images to be Audited",
-                       counter, total_images, step=1)
+    st.write(f"##### Total Images: {total_images}")
+
     df_alerts1['created_at'] = pd.to_datetime(df_alerts1['created_at'])
 
 st.divider()
 id = df_alerts1.loc[counter, 'id']
-image = (df_alerts1['image2_id']).values[counter]
+image = df_alerts1.loc[counter, 'image2_id']
 date = df_alerts1.loc[counter, 'created_at'].strftime('%d')
 month = df_alerts1.loc[counter, 'created_at'].strftime('%b')
 time = df_alerts1.loc[counter, 'created_at'].strftime('%X')
@@ -48,17 +48,16 @@ if int(date) <= 15:
     cycle = "Cycle1"
 else:
     cycle = "Cycle2"
-image_id = image[10:46]
-image_url = storage_url + image_id
+image_url = storage_url + image
 
 msg = "Date: " + date + " " + month + " " + \
-    time + " |  " + cycle + " |  "
+    time + " |  " + cycle + " |  " + store
 with col2:
-    st.write(f"###### {msg}")
-    st.write(f"###### {store}")
+    st.write(f"##### {msg}")
+
 col3, col4 = st.columns([2, 1], gap='large')
 with col3:
-    st.image(image_url, 400)
+    st.image(image_url, use_column_width='auto')
 
 
 def increment_counter():
