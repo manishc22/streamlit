@@ -25,3 +25,9 @@ def get_updated_store(id):
         data.data).loc[0, 'store_name_updated']
 
     return store_name_updated
+
+
+def get_image(uuid):
+    image = supabase.storage.from_('storeaudits').get_(uuid)
+    transformed_image = image.transform(width=100, height=100)
+    return transformed_image

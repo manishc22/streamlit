@@ -3,7 +3,7 @@ import pandas as pd
 from supabase import create_client, Client
 import os
 import streamlit as st
-from functions.get_stores import get_alerts, get_updated_store
+from functions.get_stores import get_alerts, get_updated_store, get_image
 from functions.get_store_data import get_store_data
 load_dotenv()
 
