@@ -21,39 +21,40 @@ final_store = ''
 if 'refresh' not in st.session_state:
     st.session_state['refresh'] = 0
 
+if 'counter' not in st.session_state:
+    st.session_state['counter'] = 0
 
-@st.cache_data()
-def get_data():
+if 'img1_audited' not in st.session_state:
+    st.session_state['img1_audited'] = False
+
+if 'img2_audited' not in st.session_state:
+    st.session_state['img2_audited'] = False
+
+
+@st.cache_data
+def get_data(count):
     df_images = get_store_data()
-    st.session_state['refresh'] = 2
     return df_images
 
 
-df_images = get_data()
+# df_images = get_data()
 col100, col101 = st.columns([8, 1], gap='large')
 with col101:
     with st.form(key="Refresh"):
         # st.write("Refresh")
         submit = st.form_submit_button("Refresh")
         if submit:
-            df_alerts1 = get_store_data()
-            st.session_state['refresh'] = 1
+            df_refreshed = get_data(st.session_state['refresh'])
+            st.session_state['refresh'] += 1
+            st.session_state.counter = 0
 
 print(st.session_state['refresh'])
 if st.session_state['refresh'] == 0:
     df_alerts1 = pd.DataFrame()
-elif st.session_state['refresh'] == 2:
-    df_alerts1 = get_data()
+else:
+    df_alerts1 = get_data(st.session_state['refresh'])
 
 if df_alerts1.shape[0] > 0:
-    if 'counter' not in st.session_state:
-        st.session_state['counter'] = 0
-
-    if 'img1_audited' not in st.session_state:
-        st.session_state['img1_audited'] = False
-
-    if 'img2_audited' not in st.session_state:
-        st.session_state['img2_audited'] = False
 
     counter = st.session_state.counter
 
