@@ -32,12 +32,11 @@ if 'img2_audited' not in st.session_state:
 
 
 @st.cache_data
-def get_data(count):
-    df_images = get_store_data()
-    return df_images
+def cache(count):
+    df_cache = get_store_data()
+    return df_cache
 
 
-# df_images = get_data()
 col100, col101 = st.columns([8, 1], gap='large')
 with col101:
     with st.form(key="Refresh"):
@@ -45,14 +44,12 @@ with col101:
         submit = st.form_submit_button("Refresh")
         if submit:
             st.session_state['refresh'] += 1
-            df_refreshed = get_data(st.session_state['refresh'])
             st.session_state.counter = 0
-
 
 if st.session_state['refresh'] == 0:
     df_alerts1 = pd.DataFrame()
 else:
-    df_alerts1 = get_data(st.session_state['refresh'])
+    df_alerts1 = cache(st.session_state['refresh'])
 
 if df_alerts1.shape[0] > 0:
 
