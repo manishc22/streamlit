@@ -44,11 +44,11 @@ with col101:
         # st.write("Refresh")
         submit = st.form_submit_button("Refresh")
         if submit:
-            df_refreshed = get_data(st.session_state['refresh'])
             st.session_state['refresh'] += 1
+            df_refreshed = get_data(st.session_state['refresh'])
             st.session_state.counter = 0
 
-print(st.session_state['refresh'])
+
 if st.session_state['refresh'] == 0:
     df_alerts1 = pd.DataFrame()
 else:
@@ -75,8 +75,10 @@ if df_alerts1.shape[0] > 0:
         with col1:
             st.write(
                 f"##### Image Number: {st.session_state.counter + 1} of {total_images}")
-            df_alerts1['created_at'] = pd.to_datetime(df_alerts1['created_at'])
 
+            df_alerts1['created_at'] = pd.to_datetime(
+                df_alerts1['created_at']) + pd.Timedelta('05:30:00')
+            print(df_alerts1['created_at'])
         id = df_alerts1.loc[counter, 'id'].item()
         position_id = df_alerts1.loc[counter, 'position_id']
         image = df_alerts1.loc[counter, 'image1_id']
@@ -84,6 +86,7 @@ if df_alerts1.shape[0] > 0:
         date = df_alerts1.loc[counter, 'created_at'].strftime('%d')
         month = df_alerts1.loc[counter, 'created_at'].strftime('%b')
         time = df_alerts1.loc[counter, 'created_at'].strftime('%X')
+
         store = df_alerts1.loc[counter, 'store_name']
         df_alerts1['img1_audited'] = False
         df_alerts1['img2_audited'] = False
