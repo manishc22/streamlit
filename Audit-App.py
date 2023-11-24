@@ -24,10 +24,12 @@ if 'refresh' not in st.session_state:
 
 @st.cache_data()
 def get_data():
-    df_alerts1 = get_store_data()
-    return df_alerts1
+    df_images = get_store_data()
+    st.session_state['refresh'] = 2
+    return df_images
 
 
+df_images = get_data()
 col100, col101 = st.columns([8, 1], gap='large')
 with col101:
     with st.form(key="Refresh"):
@@ -35,15 +37,13 @@ with col101:
         submit = st.form_submit_button("Refresh")
         if submit:
             df_alerts1 = get_store_data()
-            get_data()
             st.session_state['refresh'] = 1
 
-
+print(st.session_state['refresh'])
 if st.session_state['refresh'] == 0:
     df_alerts1 = pd.DataFrame()
-else:
+elif st.session_state['refresh'] == 2:
     df_alerts1 = get_data()
-
 
 if df_alerts1.shape[0] > 0:
     if 'counter' not in st.session_state:
