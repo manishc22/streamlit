@@ -12,11 +12,39 @@ key: str = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 storage_url = os.getenv("SUPABASE_STORAGE_URL")
 
-st.set_page_config(layout='wide', initial_sidebar_state='expanded')
+st.set_page_config(page_title="Store Digital Audits",
+                   layout='wide', initial_sidebar_state='expanded')
 
 
-df_alerts1 = get_store_data()
-print(df_alerts1)
+final_store = ''
+
+if 'refresh' not in st.session_state:
+    st.session_state['refresh'] = 0
+
+
+@st.cache_data()
+def get_data():
+    df_alerts1 = get_store_data()
+    return df_alerts1
+
+
+col100, col101 = st.columns([8, 1], gap='large')
+with col101:
+    with st.form(key="Refresh"):
+        # st.write("Refresh")
+        submit = st.form_submit_button("Refresh")
+        if submit:
+            df_alerts1 = get_store_data()
+            get_data()
+            st.session_state['refresh'] = 1
+
+
+if st.session_state['refresh'] == 0:
+    df_alerts1 = pd.DataFrame()
+else:
+    df_alerts1 = get_data()
+
+
 if df_alerts1.shape[0] > 0:
     if 'counter' not in st.session_state:
         st.session_state['counter'] = 0
@@ -74,15 +102,16 @@ if df_alerts1.shape[0] > 0:
         with col3:
             store_name = get_alerts(position_id)
 
-            select_store = store_name[store_name['StoreName'].str.startswith(
-                store[0])]
-            updated_store = get_updated_store(id)
-            if updated_store:
-                final_store = st.selectbox(updated_store,
-                                           select_store)
-            else:
-                final_store = st.selectbox(f"Similar Stores for {position_id}",
-                                           select_store)
+            if store_name.shape[0] > 0:
+                select_store = store_name[store_name['StoreName'].str.startswith(
+                    store[0])]
+                updated_store = get_updated_store(id)
+                if updated_store:
+                    final_store = st.selectbox(updated_store,
+                                               select_store)
+                else:
+                    final_store = st.selectbox(f"Similar Stores for {position_id}",
+                                               select_store)
 
         def save_store():
             program = pd.DataFrame.from_records(
