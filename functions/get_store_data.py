@@ -15,6 +15,7 @@ def sql_engine():
     return engine
 
 
+@st.cache_data(ttl=300)
 def get_store_data():
     engine = sql_engine()
     with engine.begin() as conn:
