@@ -78,7 +78,7 @@ if df_alerts1.shape[0] > 0:
             df_alerts1['created_at'] = pd.to_datetime(
                 df_alerts1['created_at']) + pd.Timedelta('05:30:00')
 
-        id = df_alerts1.loc[counter, 'id'].item()
+        # id = df_alerts1.loc[counter, 'id'].item()
         position_id = df_alerts1.loc[counter, 'position_id']
         image = df_alerts1.loc[counter, 'image1_id']
         image2 = df_alerts1.loc[counter, 'image2_id']
