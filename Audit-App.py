@@ -3,7 +3,7 @@ import pandas as pd
 from supabase import create_client, Client
 import os
 import streamlit as st
-from functions.get_stores import get_alerts, get_updated_store, get_image
+from functions.get_stores import get_alerts, get_updated_store, get_samrat, get_dealerboard
 from functions.get_store_data import get_store_data
 load_dotenv()
 
@@ -67,16 +67,17 @@ if df_alerts1.shape[0] > 0:
     # df_alerts1 = pd.DataFrame.from_records(get_store_data().data)
 
     total_images = df_alerts1.shape[0]
-
+    id = df_alerts1.loc[counter, 'id'].item()
     with tab1:
         col1, col2, col3, col4 = st.columns([1, 2, 2, 2], gap='large')
         with col1:
+            st.write(f"##### ID: {id}")
             st.write(
                 f"##### Image Number: {st.session_state.counter + 1} of {total_images}")
 
             df_alerts1['created_at'] = pd.to_datetime(
                 df_alerts1['created_at']) + pd.Timedelta('05:30:00')
-            print(df_alerts1['created_at'])
+
         id = df_alerts1.loc[counter, 'id'].item()
         position_id = df_alerts1.loc[counter, 'position_id']
         image = df_alerts1.loc[counter, 'image1_id']
@@ -153,10 +154,23 @@ if df_alerts1.shape[0] > 0:
 
                 if counter < (total_images - 1):
                     st.button("Next Page", on_click=increment_counter)
-            st.write(
-                f"Dealerboard Image Submitted: {st.session_state['img1_audited']}")
-            # st.write(
-            #     f"Window Visibility Image Submitted: {st.session_state.img2_audited}")
+            dealerboard_rows = get_dealerboard(id)
+
+            if dealerboard_rows.shape[0] > 0:
+                st.write(
+                    "Dealerboard Image Submitted: YES")
+            else:
+                st.write(
+                    "Dealerboard Image Submitted: NO")
+
+            samrat_rows = get_samrat(id)
+
+            if samrat_rows.shape[0] > 0:
+                st.write(
+                    "Window Visiblity Image Submitted: YES")
+            else:
+                st.write(
+                    "Window Visiblity Image Submitted: NO")
             st.divider()
             with st.expander("Dealerboard Audit"):
                 with st.form("Dealerboard Audit", clear_on_submit=True):

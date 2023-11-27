@@ -31,3 +31,17 @@ def get_image(uuid):
     image = supabase.storage.from_('storeaudits').get_(uuid)
     transformed_image = image.transform(width=100, height=100)
     return transformed_image
+
+
+def get_dealerboard(id):
+    data1 = supabase.table('dealerboard').select(
+        '*').eq('form_id', id).execute()
+    data = pd.DataFrame.from_records(data1.data)
+    return data
+
+
+def get_samrat(id):
+    data2 = supabase.table('samrat').select(
+        '*').eq('form_id', id).execute()
+    data = pd.DataFrame.from_records(data2.data)
+    return data
