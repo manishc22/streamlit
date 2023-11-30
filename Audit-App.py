@@ -18,9 +18,6 @@ st.set_page_config(page_title="Store Digital Audits",
 
 final_store = ''
 
-if 'refresh' not in st.session_state:
-    st.session_state['refresh'] = 0
-
 if 'counter' not in st.session_state:
     st.session_state['counter'] = 0
 
@@ -31,26 +28,7 @@ if 'img2_audited' not in st.session_state:
     st.session_state['img2_audited'] = False
 
 
-@st.cache_data
-def cache(count):
-    df_cache = get_store_data()
-    return df_cache
-
-
-col100, col101 = st.columns([8, 1], gap='large')
-with col101:
-    with st.form(key="Refresh"):
-        # st.write("Refresh")
-        submit = st.form_submit_button("Refresh")
-        if submit:
-            st.session_state['refresh'] = 0
-            st.session_state.counter = 0
-
-if st.session_state['refresh'] == 0:
-    df_alerts1 = get_store_data()
-else:
-    df_alerts1 = cache(st.session_state['refresh'])
-    st.session_state['refresh'] += 1
+df_alerts1 = get_store_data()
 
 if df_alerts1.shape[0] > 0:
 
