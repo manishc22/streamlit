@@ -179,13 +179,13 @@ if df_alerts1.shape[0] > 0:
                     p_window_exist = st.checkbox("Pediasure Window Exists")
                     p_eye_level = st.checkbox("Pediasure Eye Level")
                     p_backing_sheet = st.checkbox("Pediasure Brand Block")
-                    p_four_shelf_strip = st.checkbox("Pediasure 4 Shelf Strip")
+
                     st.divider()
 
                     e_window_exist = st.checkbox("Ensure Window Exists")
                     e_eye_level = st.checkbox("Ensure Eye Level")
                     e_backing_sheet = st.checkbox("Ensure Brand Block")
-                    e_four_shelf_strip = st.checkbox("Ensure 4 Shelf Strip")
+
                     st.divider()
                     all_brands = st.checkbox("All must win brands available")
 
@@ -196,7 +196,7 @@ if df_alerts1.shape[0] > 0:
 
                         data_insert = supabase.table('samrat').insert(
                             {'form_id': id, 'month': month,
-                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'p_four_shelf_strip': p_four_shelf_strip, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 'e_four_shelf_strip': e_four_shelf_strip, 'all_brands': all_brands, 'selfie_dealerboard': selfie}).execute()
+                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 'all_brands': all_brands, 'selfie_dealerboard': selfie}).execute()
 
                         data = supabase.table('store_audits').update(
                             {'image1_audited': True}).eq('id', id).execute()
