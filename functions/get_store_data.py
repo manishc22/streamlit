@@ -15,13 +15,14 @@ def sql_engine():
     return engine
 
 
+@st.cache_data
 def get_store_data():
     engine = sql_engine()
     with engine.begin() as conn:
         sql = text(
-            """select * from store_audits 
-               where image1_audited = FALSE or image2_audited = FALSE
+            """select * from audit_status
                """)
         data = pd.read_sql_query(
             sql, conn)
+        conn.close()
     return data

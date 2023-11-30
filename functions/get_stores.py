@@ -27,11 +27,11 @@ def get_updated_store(id):
     return store_name_updated
 
 
-def get_dealerboard(id):
-    data1 = supabase.table('dealerboard').select(
-        '*').eq('form_id', id).execute()
-    data = pd.DataFrame.from_records(data1.data)
-    return data
+# def get_dealerboard(id):
+#     data1 = supabase.table('dealerboard').select(
+#         '*').eq('form_id', id).execute()
+#     data = pd.DataFrame.from_records(data1.data)
+#     return data
 
 
 def get_samrat(id):

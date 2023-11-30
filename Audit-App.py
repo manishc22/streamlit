@@ -3,7 +3,7 @@ import pandas as pd
 from supabase import create_client, Client
 import os
 import streamlit as st
-from functions.get_stores import get_alerts, get_updated_store, get_samrat, get_dealerboard
+from functions.get_stores import get_alerts, get_updated_store, get_samrat
 from functions.get_store_data import get_store_data
 load_dotenv()
 
@@ -18,14 +18,9 @@ st.set_page_config(page_title="Store Digital Audits",
 
 final_store = ''
 
+
 if 'counter' not in st.session_state:
     st.session_state['counter'] = 0
-
-if 'img1_audited' not in st.session_state:
-    st.session_state['img1_audited'] = False
-
-if 'img2_audited' not in st.session_state:
-    st.session_state['img2_audited'] = False
 
 
 df_alerts1 = get_store_data()
@@ -132,40 +127,39 @@ if df_alerts1.shape[0] > 0:
 
                 if counter < (total_images - 1):
                     st.button("Next Page", on_click=increment_counter)
-            dealerboard_rows = get_dealerboard(id)
 
-            if dealerboard_rows.shape[0] > 0:
-                st.write(
-                    "Dealerboard Image Submitted: YES")
-            else:
-                st.write(
-                    "Dealerboard Image Submitted: NO")
+            # dealerboard_rows = get_dealerboard(id)
+
+            # if dealerboard_rows.shape[0] > 0:
+            #     st.write(
+            #         "Dealerboard Image Submitted: YES")
+            # else:
+            #     st.write(
+            #         "Dealerboard Image Submitted: NO")
 
             samrat_rows = get_samrat(id)
 
             if samrat_rows.shape[0] > 0:
                 st.write(
-                    "Window Visiblity Image Submitted: YES")
+                    "AUDITED: YES")
             else:
                 st.write(
-                    "Window Visiblity Image Submitted: NO")
+                    "AUDITED: NO")
             st.divider()
-            with st.expander("Dealerboard Audit"):
-                with st.form("Dealerboard Audit", clear_on_submit=True):
-                    # image_correct = st.checkbox("Image Correct")
-                    selfie = st.checkbox("Selfie with Dealerboard")
-                    submitted = st.form_submit_button(
-                        "Submit")
-                    if submitted:
+            # with st.expander("Dealerboard Audit"):
+            #     with st.form("Dealerboard Audit", clear_on_submit=False):
+            #         # image_correct = st.checkbox("Image Correct")
+            #         selfie = st.checkbox("Selfie with Dealerboard")
+            #         submitted = st.form_submit_button(
+            #             "Submit")
+            #         if submitted:
 
-                        data_insert = supabase.table('dealerboard').insert(
-                            {'form_id': id, 'selfie_dealerboard': selfie, 'month': month,
-                                'cycle': cycle}).execute()
+            #             data_insert = supabase.table('dealerboard').insert(
+            #                 {'form_id': id, 'selfie_dealerboard': selfie, 'month': month,
+            #                     'cycle': cycle}).execute()
 
-                        data = supabase.table('store_audits').update(
-                            {'image1_audited': True}).eq('id', id).execute()
-
-                        st.session_state['img1_audited'] = False
+            #             data = supabase.table('store_audits').update(
+            #                 {'image1_audited': True}).eq('id', id).execute()
 
         col7, col8 = st.columns([2, 1], gap='large')
 
@@ -174,24 +168,23 @@ if df_alerts1.shape[0] > 0:
 
         with col8:
             with st.expander("Window Visibility"):
-                with st.form("Samrat Store Audit", clear_on_submit=True):
+                with st.form("Samrat Store Audit", clear_on_submit=False):
 
-                    image_quality = st.checkbox("Image Quality")
+                    selfie = st.checkbox("Selfie with Dealerboard")
                     num_window_kits = st.number_input(
                         'Number of Window Kits', min_value=0, max_value=10)
-                    window_hotspot = st.checkbox("Window Hotspot")
 
                     st.divider()
 
                     p_window_exist = st.checkbox("Pediasure Window Exists")
                     p_eye_level = st.checkbox("Pediasure Eye Level")
-                    p_backing_sheet = st.checkbox("Pediasure Backing Sheet")
+                    p_backing_sheet = st.checkbox("Pediasure Brand Block")
                     p_four_shelf_strip = st.checkbox("Pediasure 4 Shelf Strip")
                     st.divider()
 
                     e_window_exist = st.checkbox("Ensure Window Exists")
                     e_eye_level = st.checkbox("Ensure Eye Level")
-                    e_backing_sheet = st.checkbox("Ensure Backing Sheet")
+                    e_backing_sheet = st.checkbox("Ensure Brand Block")
                     e_four_shelf_strip = st.checkbox("Ensure 4 Shelf Strip")
                     st.divider()
                     all_brands = st.checkbox("All must win brands available")
@@ -202,12 +195,12 @@ if df_alerts1.shape[0] > 0:
                     if submitted:
 
                         data_insert = supabase.table('samrat').insert(
-                            {'form_id': id, 'image_quality': image_quality, 'month': month, 'window_hotspot': window_hotspot,
-                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'p_four_shelf_strip': p_four_shelf_strip, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 'e_four_shelf_strip': e_four_shelf_strip, 'all_brands': all_brands}).execute()
+                            {'form_id': id, 'month': month,
+                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'p_four_shelf_strip': p_four_shelf_strip, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 'e_four_shelf_strip': e_four_shelf_strip, 'all_brands': all_brands, 'selfie_dealerboard': selfie}).execute()
 
                         data = supabase.table('store_audits').update(
-                            {'image2_audited': True}).eq('id', id).execute()
+                            {'image1_audited': True}).eq('id', id).execute()
 
-                        df_alerts1.loc[counter, 'img2_audited'] = True
+
 else:
     st.header("No data available")
