@@ -30,8 +30,8 @@ if df_alerts1.shape[0] > 0:
     counter = st.session_state.counter
 
     def get_store_program(position_id, store):
-        data = supabase.table('store_master').select(
-            '"ProgramName"').eq('"SalesmanPositionId"', position_id).eq('"StoreName"', store).execute()
+        data = supabase.table('abbott_master_jan').select(
+            '"ProgramName"').eq('"SalesmanPositionID"', position_id).eq('"StoreName"', store).execute()
         return data.data
 
     st.write("### Audit App")
@@ -77,7 +77,7 @@ if df_alerts1.shape[0] > 0:
 
         with col3:
             store_name = get_alerts(position_id)
-
+            print(store_name)
             if store_name.shape[0] > 0:
                 select_store = store_name[store_name['StoreName'].str.startswith(
                     store[0])]
