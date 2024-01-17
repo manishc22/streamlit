@@ -81,6 +81,9 @@ if df_alerts1.shape[0] > 0:
             if store_name.shape[0] > 0:
                 select_store = store_name[store_name['StoreName'].str.startswith(
                     store_caps)]
+                if select_store.shape[0] == 0:
+                    select_store = store_name[store_name['StoreName'].str.startswith(
+                        store[0])]
                 updated_store = get_updated_store(id)
                 if updated_store:
                     final_store = st.selectbox(updated_store,
