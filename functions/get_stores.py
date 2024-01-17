@@ -11,8 +11,8 @@ supabase: Client = create_client(url, key)
 
 
 def get_alerts(positionID):
-    data = supabase.table('store_master').select(
-        '"StoreName"').eq('"SalesmanPositionId"', positionID).execute()
+    data = supabase.table('abbott_master_jan').select(
+        '"StoreName"').eq('"SalesmanPositionID"', positionID).execute()
     df_stores = pd.DataFrame.from_records(data.data)
 
     return df_stores
