@@ -122,18 +122,23 @@ def text_to_array(string):
 
 with col2:
     with st.form('Cheque Details'):
-        name = st.text_input('Beneficiary Name', value = df_kyc_details['beneficiary_name'][0])
-        acc = st.text_input('Account Number', value = df_kyc_details['account_no'][0])
-        code = st.text_input('IFSC Code', value = df_kyc_details['bank_code'][0])
-        aadhar_name = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_name'][0])
-        aadhar_no = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_number'][0])
-        status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'))
+        name = st.text_input('Beneficiary Name', value = df_kyc_details['beneficiary_name'][0], key=1)
+        acc = st.text_input('Account Number', value = df_kyc_details['account_no'][0], key=2)
+        code = st.text_input('IFSC Code', value = df_kyc_details['bank_code'][0], key=3)
+        aadhar_name = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_name'][0], key=4)
+        aadhar_no = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_number'][0], key=5)
+        status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'), key=6)
         submitted = st.form_submit_button("Submit")
-        name = [text_to_array(name)]
-        acc = [text_to_array(acc)]
-        code = [text_to_array(code)]
-        aadhar_name = [text_to_array(aadhar_name)]
-        aadhar_no = [text_to_array(aadhar_no)]
+        if name:
+            name = [text_to_array(name)]
+        if acc:
+            acc = [text_to_array(acc)]
+        if code:
+            code = [text_to_array(code)]
+        if aadhar_name:
+            aadhar_name = [text_to_array(aadhar_name)]
+        if aadhar_no:
+            aadhar_no = [text_to_array(aadhar_no)]
 
         print(acc, code, name)
         if submitted:
