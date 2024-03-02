@@ -26,3 +26,38 @@ def get_store_data():
             sql, conn)
         conn.close()
     return data
+
+
+@st.cache_data(ttl=1800)
+def get_kyc_data():
+    engine = sql_engine()
+    with engine.begin() as conn:
+        sql = text(
+            """select * from kyc_audits where audited = 'FALSE'
+               """)
+        data = pd.read_sql_query(
+            sql, conn)
+        conn.close()
+    return data
+
+@st.cache_data(ttl=1800)
+def kyc_details_name(id):
+    engine = sql_engine()
+    with engine.begin() as conn:
+        sql = text(
+            """select * from kyc_details where form_id = :id
+               """)
+        data = pd.read_sql_query(
+            sql, conn, params={'id': int(id)})
+        conn.close()
+    return data
+
+def update_kyc(form_id, code, name, account, aadhar_no, aadhar_name, status):
+    engine = sql_engine()
+    with engine.begin() as conn:
+        sql = text(""" update kyc_details 
+        set account_no = :account, beneficiary_name = :name, bank_code = :code, aadhar_name = :aadhar_name, aadhar_number = :aadhar_no, status = :status
+                   where form_id = :form_id""")            
+        conn.execute(sql, {"form_id":int(form_id), 'code':code, 'name':name, 'account':account, 'aadhar_name':aadhar_name, 'aadhar_no': aadhar_no, 'status':status})
+    conn.close()    
+    return None
