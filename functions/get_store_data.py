@@ -40,7 +40,7 @@ def get_kyc_data():
         conn.close()
     return data
 
-@st.cache_data(ttl=1800)
+@st.cache_data(ttl=7200)
 def kyc_details_name(id):
     engine = sql_engine()
     with engine.begin() as conn:
