@@ -127,7 +127,8 @@ with col2:
         code = st.text_input('IFSC Code', value = df_kyc_details['bank_code'][0], key=3)
         aadhar_name = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_name'][0], key=4)
         aadhar_no = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_number'][0], key=5)
-        status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'), key=6)
+        failure_reason = st.text_input('Failure Reason', key=6)
+        status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'), key=7)
         submitted = st.form_submit_button("Submit")
         if name:
             name = [text_to_array(name)]
@@ -140,9 +141,9 @@ with col2:
         if aadhar_no:
             aadhar_no = [text_to_array(aadhar_no)]
 
-        print(acc, code, name)
+        
         if submitted:
-            update_kyc(id, code, name, acc, aadhar_no, aadhar_name, status)
+            update_kyc(id, code, name, acc, aadhar_no, aadhar_name, status, failure_reason)
             data = supabase.table('kyc_audits').update(
                             {'audited': True}).eq('id', id).execute()
 st.divider()

@@ -52,12 +52,12 @@ def kyc_details_name(id):
         conn.close()
     return data
 
-def update_kyc(form_id, code, name, account, aadhar_no, aadhar_name, status):
+def update_kyc(form_id, code, name, account, aadhar_no, aadhar_name, status, failure_reason):
     engine = sql_engine()
     with engine.begin() as conn:
         sql = text(""" update kyc_details 
-        set account_no = :account, beneficiary_name = :name, bank_code = :code, aadhar_name = :aadhar_name, aadhar_number = :aadhar_no, status = :status
+        set account_no = :account, beneficiary_name = :name, bank_code = :code, aadhar_name = :aadhar_name, aadhar_number = :aadhar_no, status = :status, failure_reason = :failure_reason
                    where form_id = :form_id""")            
-        conn.execute(sql, {"form_id":int(form_id), 'code':code, 'name':name, 'account':account, 'aadhar_name':aadhar_name, 'aadhar_no': aadhar_no, 'status':status})
+        conn.execute(sql, {"form_id":int(form_id), 'code':code, 'name':name, 'account':account, 'aadhar_name':aadhar_name, 'aadhar_no': aadhar_no, 'status':status, 'failure_reason': failure_reason})
     conn.close()    
     return None
