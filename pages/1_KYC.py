@@ -4,7 +4,7 @@ import pandas as pd
 from supabase import create_client, Client
 import os
 import streamlit as st
-from functions.get_store_data import get_kyc_data, kyc_details_name, update_kyc
+from functions.get_store_data import get_kyc_data, kyc_details_name, update_kyc, get_current_status
 
 load_dotenv()
 
@@ -57,7 +57,7 @@ st.divider()
 
 
 
-col1, col2, col3, col4 = st.columns([1,2,1,2], gap='large')
+col1, col2, col3, col4 = st.columns([1,2,2,1], gap='large')
 
 id = forms_filter.loc[kyc_counter, 'id'].item()
 position_id = forms_filter.loc[kyc_counter, 'position_id']
@@ -71,7 +71,7 @@ gst_name = forms_filter.loc[kyc_counter,'gst_name']
 store_name = forms_filter.loc[kyc_counter, 'store_name']
 # print(type(id))
 df_kyc_details = kyc_details_name(id)
-print(df_kyc_details['beneficiary_name'][0])
+
 
 if (dealerboard):
     dealerboard_url = storage_url + dealerboard
@@ -99,6 +99,10 @@ with col1:
 with col2:
     st.write(f"###### PositionID - {position_id}")
     st.write(f"###### Store Name - {store_name}")
+
+with col3:
+    data = get_current_status(id)
+    st.write(f"##### Status: {data['status'].values[0]}")
 
 
 st.divider()    

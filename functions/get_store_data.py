@@ -61,3 +61,13 @@ def update_kyc(form_id, code, name, account, aadhar_no, aadhar_name, status, fai
         conn.execute(sql, {"form_id":int(form_id), 'code':code, 'name':name, 'account':account, 'aadhar_name':aadhar_name, 'aadhar_no': aadhar_no, 'status':status, 'failure_reason': failure_reason})
     conn.close()    
     return None
+
+def get_current_status (form_id):
+    engine = sql_engine()
+    with engine.begin() as conn:
+        sql = text("""select status from kyc_details where form_id = :form_id
+               """)            
+        data = pd.read_sql_query(
+            sql, conn, params={'form_id': form_id})
+        conn.close()  
+    return data
