@@ -45,7 +45,9 @@ with col3:
     col10, col11 = st.columns([1, 1], gap='small')
     
     with col10:
-        if kyc_counter >= 0:
+        if kyc_counter < 0:
+            update_counter()
+        if kyc_counter > 0:
             st.button("Previous", on_click=decrement_counter)
     with col11:
 
@@ -124,26 +126,46 @@ with col1:
 def text_to_array(string):
     return string[2:-2]
 
+def arraytostring(array):
+    string = ','.join(array) 
+    return string
+
+beneficiary_name = arraytostring(df_kyc_details['beneficiary_name'][0])
+account = arraytostring(df_kyc_details['account_no'][0])
+bank_code = arraytostring(df_kyc_details['bank_code'][0])
+if df_kyc_details['aadhar_name'].shape[0] > 0:
+    aadhar_name = arraytostring(df_kyc_details['aadhar_name'][0])
+    aadhar_no = arraytostring(df_kyc_details['aadhar_number'][0])
+else:
+    aadhar_name = ''
+    aadhar_no = ''
+
 with col2:
+  
     with st.form('Cheque Details'):
-        name = st.text_input('Beneficiary Name', value = df_kyc_details['beneficiary_name'][0], key=1)
-        acc = st.text_input('Account Number', value = df_kyc_details['account_no'][0], key=2)
-        code = st.text_input('IFSC Code', value = df_kyc_details['bank_code'][0], key=3)
-        aadhar_name = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_name'][0], key=4)
-        aadhar_no = st.text_input('Aadhar Name', value = df_kyc_details['aadhar_number'][0], key=5)
+        
+        name = st.text_input('Beneficiary Name', value = beneficiary_name, key=1)
+        acc = st.text_input('Account Number', value = account, key=2)
+        code = st.text_input('IFSC Code', value = bank_code, key=3)
+        aadhar_name = st.text_input('Aadhar Name', value = aadhar_name, key=4)
+        aadhar_no = st.text_input('Aadhar Name', value = aadhar_no, key=5)
         failure_reason = st.text_input('Failure Reason', key=6)
         status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'), key=7)
         submitted = st.form_submit_button("Submit")
         if name:
-            name = [text_to_array(name)]
+            name = [name]
         if acc:
-            acc = [text_to_array(acc)]
+            acc = [acc]
         if code:
-            code = [text_to_array(code)]
+            code = [code]
         if aadhar_name:
-            aadhar_name = [text_to_array(aadhar_name)]
+            aadhar_name = [aadhar_name]
+        else: 
+            aadhar_name = ['']
         if aadhar_no:
-            aadhar_no = [text_to_array(aadhar_no)]
+            aadhar_no = [aadhar_no]
+        else:
+            aadhar_no = ['']    
 
         
         if submitted:
