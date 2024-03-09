@@ -143,15 +143,24 @@ else:
     aadhar_name = ''
     aadhar_no = ''
 
+if df_kyc_details['bank_code'][0] is None:
+    bank_code = ''
+elif df_kyc_details['bank_code'].shape[0] > 0:
+    bank_code = arraytostring(df_kyc_details['bank_code'][0])
+else:
+    bank_code = ''
+    
+ben_updated = df_kyc_details['beneficiary_updated'][0]
+aadhar_updated = df_kyc_details['aadhar_updated'][0]
 with col2:
-  
+    # print(df_kyc_details['beneficiary_updated'][0])
     with st.form('Cheque Details'):
-        
+        st.write(f'###### {ben_updated}')
         name = st.text_input('Beneficiary Name', value = beneficiary_name, key=1)
         acc = st.text_input('Account Number', value = account, key=2)
         code = st.text_input('IFSC Code', value = bank_code, key=3)
-        aadhar_name = st.text_input('Aadhar Name', value = aadhar_name, key=4)
-        aadhar_no = st.text_input('Aadhar Name', value = aadhar_no, key=5)
+        aadhar_name = st.write(f'###### {aadhar_updated}')
+        aadhar_no = st.text_input('Aadhar Number', value = aadhar_no, key=5)
         failure_reason = st.text_input('Failure Reason', key=6)
         status = st.selectbox('KYC Status', ('Pending', 'Success', 'Failed'), key=7)
         submitted = st.form_submit_button("Submit")
