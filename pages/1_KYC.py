@@ -130,9 +130,21 @@ def arraytostring(array):
     string = ','.join(array) 
     return string
 
-beneficiary_name = arraytostring(df_kyc_details['beneficiary_name'][0])
-account = arraytostring(df_kyc_details['account_no'][0])
-bank_code = arraytostring(df_kyc_details['bank_code'][0])
+if df_kyc_details['beneficiary_name'][0] != None:
+    beneficiary_name = arraytostring(df_kyc_details['beneficiary_name'][0])
+else:    
+    beneficiary_name = ''
+
+if df_kyc_details['account_no'][0] != None:
+    account = arraytostring(df_kyc_details['account_no'][0])
+else:
+    account = ''
+
+if df_kyc_details['bank_code'][0] != None:
+    bank_code = arraytostring(df_kyc_details['bank_code'][0])
+else:
+    bank_code = ''
+    
 if df_kyc_details['aadhar_name'][0] is None:
     aadhar_name = ''
     aadhar_no = ''
