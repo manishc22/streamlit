@@ -83,9 +83,9 @@ def duplicate_rows():
                 from kyc_current_status
                 group by store_name, position_id),
                 data as (
-                select * from count where count_stores > 1)
+                select * from count where count_stores > 2)
                 select * from kyc_current_status a, data where a.store_name = data.store_name and a.position_id = data.position_id
-                order by a.position_id, a.id
+                order by a.position_id, a.store_name
                 """)
         data = pd.read_sql_query(sql, conn)
         conn.close()
