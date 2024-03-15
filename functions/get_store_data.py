@@ -62,6 +62,7 @@ def update_kyc(form_id, code, name, account, aadhar_no, aadhar_name, status, fai
     conn.close()    
     return None
 
+
 def get_current_status (form_id):
     engine = sql_engine()
     with engine.begin() as conn:
@@ -71,3 +72,21 @@ def get_current_status (form_id):
             sql, conn, params={'form_id': form_id})
         conn.close()  
     return data
+
+@st.cache_data(ttl=3600)
+def duplicate_rows():
+    engine = sql_engine()
+    with engine.begin() as conn:
+        sql = text("""
+                with count as (
+                select store_name, position_id, count(store_name) as count_stores
+                from kyc_current_status
+                group by store_name, position_id),
+                data as (
+                select * from count where count_stores > 1)
+                select * from kyc_current_status a, data where a.store_name = data.store_name and a.position_id = data.position_id
+                order by a.position_id, a.id
+                """)
+        data = pd.read_sql_query(sql, conn)
+        conn.close()
+        return data
