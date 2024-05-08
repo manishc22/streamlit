@@ -77,35 +77,35 @@ if df_alerts1.shape[0] > 0:
 
         with col3:
             store_name = get_alerts(position_id)
-            store_caps = store[0].capitalize()
-            if store_name.shape[0] > 0:
-                select_store = store_name[store_name['StoreName'].str.startswith(
-                    store_caps)]
-                if select_store.shape[0] == 0:
-                    select_store = store_name[store_name['StoreName'].str.startswith(
-                        store[0])]
-                updated_store = get_updated_store(id)
-                if updated_store:
-                    final_store = st.selectbox(updated_store,
-                                               select_store)
-                else:
-                    final_store = st.selectbox(f"Similar Stores for {position_id}",
-                                               select_store)
+            # store_caps = store[0].capitalize()
+        #     if store_name.shape[0] > 0:
+        #         select_store = store_name[store_name['StoreName'].str.startswith(
+        #             store_caps)]
+        #         if select_store.shape[0] == 0:
+        #             select_store = store_name[store_name['StoreName'].str.startswith(
+        #                 store[0])]
+        #         updated_store = get_updated_store(id)
+        #         if updated_store:
+        #             final_store = st.selectbox(updated_store,
+        #                                        select_store)
+        #         else:
+        #             final_store = st.selectbox(f"Similar Stores for {position_id}",
+        #                                        select_store)
 
-        def save_store():
-            program = pd.DataFrame.from_records(
-                get_store_program(position_id, final_store)).values[0][0]
+        # def save_store():
+        #     program = pd.DataFrame.from_records(
+        #         get_store_program(position_id, final_store)).values[0][0]
 
-            if program:
-                data = supabase.table('store_audits').update(
-                    {'store_name_updated': final_store}).eq('id', id).execute()
-                data1 = supabase.table('store_audits').update(
-                    {'program_name': program}).eq('id', id).execute()
+        #     if program:
+        #         data = supabase.table('store_audits').update(
+        #             {'store_name_updated': final_store}).eq('id', id).execute()
+        #         data1 = supabase.table('store_audits').update(
+        #             {'program_name': program}).eq('id', id).execute()
 
-        with col4:
+        # with col4:
 
-            if final_store:
-                st.button("Save Store", on_click=save_store)
+            # if final_store:
+            #     st.button("Save Store", on_click=save_store)
 
         st.divider()
 
