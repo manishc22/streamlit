@@ -58,6 +58,7 @@ if df_alerts1.shape[0] > 0:
         date = df_alerts1.loc[counter, 'created_at'].strftime('%d')
         month = df_alerts1.loc[counter, 'created_at'].strftime('%b')
         time = df_alerts1.loc[counter, 'created_at'].strftime('%X')
+        program_name = df_alerts1.loc[counter, 'program_name']
 
         store = df_alerts1.loc[counter, 'store_name']
         df_alerts1['img1_audited'] = False
@@ -74,7 +75,10 @@ if df_alerts1.shape[0] > 0:
         with col2:
             st.write(f"##### PositionID - {position_id}")
             st.write(f"###### {msg}")
-
+            if program_name:
+                st.write(f"###### Program Name: {program_name}")
+            else:
+                st.write(f"###### No program name available")
         with col3:
             store_name = get_alerts(position_id)
             # store_caps = store[0].capitalize()
