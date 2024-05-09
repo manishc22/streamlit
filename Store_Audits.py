@@ -194,6 +194,12 @@ if df_alerts1.shape[0] > 0:
                     e_backing_sheet = st.checkbox("Ensure Brand Block")
 
                     st.divider()
+
+                    s_window_exist = st.checkbox("Similac Window Exists")
+                    s_eye_level = st.checkbox("Similac Eye Level")
+                    s_backing_sheet = st.checkbox("Similac Brand Block")
+
+                    st.divider()
                     all_brands = st.checkbox("All must win brands available")
 
                     submitted = st.form_submit_button(
@@ -203,7 +209,7 @@ if df_alerts1.shape[0] > 0:
 
                         data_insert = supabase.table('samrat').insert(
                             {'form_id': id, 'month': month,
-                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 'all_brands': all_brands, 'selfie_dealerboard': selfie}).execute()
+                                'cycle': cycle, 'p_window_exist': p_window_exist, 'p_eye_level': p_eye_level, 'p_backing_sheet': p_backing_sheet, 'num_window_kits': num_window_kits, 'e_window_exist': e_window_exist, 'e_eye_level': e_eye_level, 'e_backing_sheet': e_backing_sheet, 's_window_exist': s_window_exist, 's_eye_level': s_eye_level, 's_backing_sheet': s_backing_sheet, 'all_brands': all_brands, 'selfie_dealerboard': selfie}).execute()
 
                         data = supabase.table('store_audits').update(
                             {'image1_audited': True}).eq('id', id).execute()
